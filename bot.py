@@ -24,10 +24,10 @@ t.daemon = True
 t.start()
 
 # --- 2. Telegram Bot va Sozlamalar ---
-TOKEN = '8815596661:AAFj0_tnBVyNesYDzDFyeHoAdsjuAdsjuAwq0_WI'  # Botingiz tokeni
+TOKEN = '8815596661:AAFj0_tnBVyNesYDzDFyeHoAdsjuAwq0_WI'
 bot = telebot.TeleBot(TOKEN)
 
-# Sizning Telegram Admin ID raqamingiz
+# Sizning Admin ID raqamingiz
 ADMIN_ID = 8019481444
 
 ADS_TEXT = '\n\n🤖 **Bot:** @SavedToVideoBot'
@@ -61,7 +61,7 @@ def get_keyboard():
 
 @bot.message_handler(commands=['start'])
 def start_message(message):
-  save_user(message.chat.id)  # Foydalanuvchini yozib olamiz
+  save_user(message.chat.id)
   bot.send_message(
       message.chat.id,
       'Xush kelibsiz! Menga Instagram, TikTok yoki YouTube\'dan havola'
@@ -70,10 +70,10 @@ def start_message(message):
   )
 
 
-# --- 4. Hammaga xabar va rasm tarqatish (Rassilka / Broadcast) ---
+# --- 4. MUHIM: /send buyrug'i yuqorida turishi shart! ---
 @bot.message_handler(commands=['send', 'broadcast'])
 def broadcast_message(message):
-  if message.from_user.id != ADMIN_ID:8019481444
+  if message.from_user.id != ADMIN_ID:
     bot.reply_to(message, 'Kechirasiz, bu buyruq faqat admin uchun!')
     return
 
@@ -116,7 +116,7 @@ def broadcast_message(message):
     if not text:
       bot.reply_to(
           message,
-          '⚠️ **Qandat ishlatiladi?**\n\n'
+          '⚠️ **Qanday ishlatiladi?**\n\n'
           '1. **Faqat matn:** `/send Salom yangilik!`\n'
           '2. **Rasm bilan:** Rasmni tanlab, ostidagi matnga `/send Bu rasm'
           ' izohi` deb yozasiz.',
@@ -138,14 +138,14 @@ def broadcast_message(message):
   )
 
 
-# --- 5. Video Yuklovchi Handler ---
+# --- 5. Video Yuklovchi Handler (Doim eng pastda turishi kerak) ---
 @bot.message_handler(func=lambda message: True)
 def handle_message(message):
-  save_user(message.chat.id)  # Har gal xabar kelganda ID'ni bazaga tekshiradi
+  save_user(message.chat.id)
   url = message.text.strip()
 
   if not (url.startswith('http://') or url.startswith('https://')):
-    bot.reply_to(message, "Iltimos, to'g'ri havola yuboring ❗ .")
+    bot.reply_to(message, "Iltimos, to'g'ri havola yuboring.")
     return
 
   msg = bot.reply_to(message, '⏳ Video yuklanmoqda, kuting...')
@@ -160,7 +160,7 @@ def handle_message(message):
       bot.send_video(
           message.chat.id,
           video,
-          caption=f'Yuklab olindi!{ADS_TEXT}',
+          caption=f'Tashlagan havola Videoingiz Yuklab olindi✅ !{ADS_TEXT}',
           parse_mode='Markdown',
           reply_markup=get_keyboard(),
       )
@@ -179,6 +179,7 @@ def handle_message(message):
 # --- 6. Botni ishga tushirish ---
 if __name__ == '__main__':
   bot.infinity_polling(timeout=10, long_polling_timeout=5)
+
 
 
 

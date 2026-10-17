@@ -5,21 +5,23 @@ import telebot
 from telebot import types
 import yt_dlp
 
-# --- Render o'chib qolmasligi uchun Flask veb-server ---
-app = Flask('')
+# --- Flask server (Render o'chib qolmasligi uchun) ---
+app = Flask(__name__)
 
 @app.route('/')
 def home():
     return "Bot status: Active"
 
-def run_flask():
+def run_web():
     port = int(os.environ.get("PORT", 10000))
     app.run(host='0.0.0.0', port=port)
 
-# Veb-serverni orqa fonda ishga tushirish
-threading.Thread(target=run_flask).start()
-# ----------------------------------------------------
+# Veb-serverni orqa fonda ishonchli ishga tushirish
+t = threading.Thread(target=run_web)
+t.daemon = True
+t.start()
 
+# --- Telegram Bot ---
 TOKEN = "8815596661:AAFj0_tnBVyNesYDzDFyeHoAdsjuAwq0_WI"
 bot = telebot.TeleBot(TOKEN)
 
@@ -38,7 +40,7 @@ def get_keyboard():
 def start_message(message):
     bot.send_message(
         message.chat.id,
-        "Xush kelibsiz! Menga Instagram, TikTok yoki YouTube'dan havola yuboring.",
+        "Xush kelibsiz! Menga Instagram, TikTok yoki YouTube'dan havola yuborishingizni kutyabman... .",
         reply_markup=get_keyboard()
     )
 
@@ -79,5 +81,6 @@ def handle_message(message):
         bot.edit_message_text(f"Xatolik yuz berdi: {e}", message.chat.id, msg.message_id)
 
 if __name__ == "__main__":
-    bot.infinity_polling()
+    bot.infinity_polling(timeout=10, long_polling_timeout=5)
+
 

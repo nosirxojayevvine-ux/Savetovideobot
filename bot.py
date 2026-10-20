@@ -24,7 +24,7 @@ t.daemon = True
 t.start()
 
 # --- 2. Telegram Bot va Sozlamalar ---
-TOKEN = '8815596661:AAFj0_tnBVyNesYDzDFyeHoAdsjuAwq0_WI'
+TOKEN = '8815596661:AAGIEtg_BA-PUmmBqd48GU8qMFB5SnvBWec'
 bot = telebot.TeleBot(TOKEN)
 
 # Sizning Admin ID raqamingiz
@@ -49,7 +49,7 @@ def save_user(user_id):
 def get_keyboard():
   keyboard = types.InlineKeyboardMarkup()
   add_btn = types.InlineKeyboardButton(
-      text="➕ Guruhga qo'shish",
+      text="➕ Guruhga qo'shing",
       url='https://t.me/SavedToVideoBot?startgroup=true',
   )
   keyboard.add(add_btn)
@@ -65,12 +65,12 @@ def start_message(message):
   bot.send_message(
       message.chat.id,
       'Xush kelibsiz! Menga Instagram, TikTok yoki YouTube\'dan havola'
-      ' yuboring.',
+      ' yuborishingizni kutyabman...',
       reply_markup=get_keyboard(),
   )
 
 
-# --- 4. MUHIM: /send buyrug'i yuqorida turishi shart! ---
+# --- 4. Hammaga xabar va rasm tarqatish (Rassilka / Broadcast) ---
 @bot.message_handler(commands=['send', 'broadcast'])
 def broadcast_message(message):
   if message.from_user.id != ADMIN_ID:
@@ -117,7 +117,7 @@ def broadcast_message(message):
       bot.reply_to(
           message,
           '⚠️ **Qanday ishlatiladi?**\n\n'
-          '1. **Faqat matn:** `/send Salom yangilik!`\n'
+          '1. **Faqat matn:** `/send Assalomu alaykum`\n'
           '2. **Rasm bilan:** Rasmni tanlab, ostidagi matnga `/send Bu rasm'
           ' izohi` deb yozasiz.',
           parse_mode='Markdown',
@@ -138,7 +138,7 @@ def broadcast_message(message):
   )
 
 
-# --- 5. Video Yuklovchi Handler (Doim eng pastda turishi kerak) ---
+# --- 5. Video Yuklovchi Handler ---
 @bot.message_handler(func=lambda message: True)
 def handle_message(message):
   save_user(message.chat.id)
@@ -148,7 +148,7 @@ def handle_message(message):
     bot.reply_to(message, "Iltimos, to'g'ri havola yuboring.")
     return
 
-  msg = bot.reply_to(message, '⏳ Video yuklanmoqda, kuting...')
+  msg = bot.reply_to(message, '⏳ Havolangiz Yuklab olinmoqda, kuting...')
 
   ydl_opts = {'format': 'best', 'outtmpl': 'video.mp4', 'quiet': True}
 
@@ -160,7 +160,8 @@ def handle_message(message):
       bot.send_video(
           message.chat.id,
           video,
-          caption=f'Tashlagan havola Videoingiz Yuklab olindi✅ !{ADS_TEXT}',
+          caption=Videoingiz yuklab olindi ✅ 
+(Tashlagan havolangiz uchun raxmat)!{ADS_TEXT}',
           parse_mode='Markdown',
           reply_markup=get_keyboard(),
       )

@@ -9,7 +9,7 @@ import yt_dlp
 app = Flask(__name__)
 
 @app.route('/')
-def home():
+def home() :
     return "Bot status: Active"
 
 def run_web():
